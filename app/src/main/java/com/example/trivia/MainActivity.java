@@ -16,14 +16,12 @@ public class MainActivity extends AppCompatActivity {
     private Button[] answerButtons;
     private ArrayList<Question> questions;
     private int currentQuestionIndex;
-    private int correctAnswersCount; // Counter for correct answers
+    private int correctAnswersCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Initialize UI components
         questionText = findViewById(R.id.questionText);
         answerButtons = new Button[]{
                 findViewById(R.id.btnAnswer1),
@@ -32,18 +30,14 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.btnAnswer4)
         };
 
-        // Initialize variables
         correctAnswersCount = 0;
 
-        // Load questions
         loadQuestions();
         Collections.shuffle(questions);
         currentQuestionIndex = 0;
 
-        // Display the first question
         displayQuestion();
 
-        // Set click listeners for buttons
         for (int i = 0; i < answerButtons.length; i++) {
             int finalI = i;
             answerButtons[i].setOnClickListener(v -> checkAnswer(finalI));
@@ -51,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadQuestions() {
-        // Add 10 questions to the list
         questions = new ArrayList<>();
         questions.add(new Question("מהו הבירה של ישראל?",
                 new String[]{"ירושלים", "תל אביב", "חיפה", "באר שבע"}, 0));
@@ -76,13 +69,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayQuestion() {
-        // Show the current question
         Question currentQuestion = questions.get(currentQuestionIndex);
         questionText.setText(currentQuestion.questionText);
 
         for (int i = 0; i < answerButtons.length; i++) {
             answerButtons[i].setText(currentQuestion.options[i]);
-            answerButtons[i].setVisibility(View.VISIBLE); // Ensure buttons are visible
+            answerButtons[i].setVisibility(View.VISIBLE);
         }
     }
 
@@ -90,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         Question currentQuestion = questions.get(currentQuestionIndex);
 
         if (selectedOption == currentQuestion.correctOptionIndex) {
-            correctAnswersCount++; // Increment correct answers count
+            correctAnswersCount++;
         }
 
         moveToNextQuestion();
@@ -102,17 +94,14 @@ public class MainActivity extends AppCompatActivity {
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
         } else {
-            // Show summary in the UI
             showSummary();
         }
     }
 
     private void showSummary() {
-        // Display the summary in the TextView
         String summaryMessage = "החידון הסתיים!\nענית נכון על " + correctAnswersCount + " מתוך " + questions.size() + " שאלות!";
         questionText.setText(summaryMessage);
 
-        // Hide the answer buttons
         for (Button button : answerButtons) {
             button.setVisibility(View.GONE);
         }
